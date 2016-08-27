@@ -2,6 +2,9 @@
 
 set -e
 
+script_dir=$(cd $(dirname $BASH_SOURCE); pwd)
+cd $script_dir
+
 PYTHON_VERSION=2.7.10
 
 # source pyenv

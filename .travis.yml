@@ -15,6 +15,7 @@ script:
   - yamllint ansible/raspi3.yaml
   - ansible-playbook  ansible/raspi3.yaml --syntax-check
   - bash -n install.sh
+  - bash -n deploy.sh
   # ansible test
   - ansible-playbook  -i localhost, ansible/raspi3.yaml --connection=local
   # test install.sh
