@@ -6,9 +6,10 @@ before_install:
   - sudo apt-get update -qq
 
 install:
-  - pip install ansible
+  - pip install ansible yamllint
   # Add ansible.cfg to pick up roles path.
   - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
 
 script:
+  - yamllint ansible/raspi3.yaml
   - ansible-playbook  ansible/raspi3.yaml --syntax-check
