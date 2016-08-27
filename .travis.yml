@@ -11,4 +11,4 @@ install:
   - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
 
 script:
-  - ansible-playbook  ansible/raspi3.yml --syntax-check
+  - ansible-playbook  ansible/raspi3.yaml --syntax-check
