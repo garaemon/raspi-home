@@ -4,9 +4,6 @@
   vars:
     python_version: 2.7.10
   tasks:
-    - name: Update apt packages
-      apt: update_cache=yes
-      become: yes
     - name: Install apt packages
       apt: name={{item}} state=latest
       become: yes
@@ -55,3 +52,8 @@
       with_items:
         - virtualenv
         - pip
+    - name: create slackborc
+      shell: |
+        SLACKBOT_API_TOKEN="{{lookup('env', 'SLACKBOT_API_TOKEN')}}"
+        echo export SLACKBOT_API_TOKEN=$SLACKBOT_API_TOKEN= \
+        > $HOME/.slackbotrc

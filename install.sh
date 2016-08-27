@@ -18,15 +18,15 @@ if ! pyenv versions | grep $PYTHON_VERSION; then
 fi
 
 # setup virtualenv
-if [ ! -e raspi-server/env ] ; then
-    (cd raspi-server &&
+if [ ! -e python/env ] ; then
+    (cd python &&
      pyenv local $PYTHON_VERSION &&
      virtualenv env)
 fi
 
-cd raspi-server
+cd python
 
 source env/bin/activate
 pip install -U -r requirements.txt
-
+python setup.py install
 espeak -s 100 "Installed" 2>/dev/null
