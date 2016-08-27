@@ -27,4 +27,6 @@ fi
 cd raspi-server
 
 source env/bin/activate
-pip install -r requirements.txt
+pip install -U -r requirements.txt
+
+espeak -s 100 "Installed" 2>/dev/null
