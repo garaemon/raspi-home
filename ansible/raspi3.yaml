@@ -34,6 +34,8 @@
         - libreadline-dev
     - name: install pyenv
       git: repo=https://github.com/yyuu/pyenv.git dest=$HOME/.pyenv
+    - name: install pyenv-virtualenv
+      git: repo=https://github.com/yyuu/pyenv-virtualenv.git dest=$HOME/.pyenv/plugins/pyenv-virtualenv
     - name: install python with pyenv
       shell: |
         export PYENV_ROOT=$HOME/.pyenv
