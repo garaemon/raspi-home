@@ -33,7 +33,7 @@
         - libbz2-dev
         - libreadline-dev
     - name: install pyenv
-      git: repo=https://github.com/yyuu/pyenv.git dest=/home/pi/.pyenv
+      git: repo=https://github.com/yyuu/pyenv.git dest=$HOME/.pyenv
     - name: install python with pyenv
       shell: |
         export PYENV_ROOT=$HOME/.pyenv
