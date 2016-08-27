@@ -1,0 +1,55 @@
+- hosts: all
+  remote_user: pi
+  vars:
+    python_version: 2.7.6
+  tasks:
+    - name: Update apt packages
+      apt: update_cache=yes
+      become: yes
+    - name: Install apt packages
+      apt: name={{item}} state=latest
+      become: yes
+      with_items:
+        - git
+        - tmux
+        - screen
+        - chrony
+        - curl
+        - mplayer
+        - open-jtalk
+        - open-jtalk-mecab-naist-jdic
+        - hts-voice-nitech-jp-atr503-m001
+        - htop
+        - build-essential
+        - libncursesw5-dev
+        - libgdbm-dev
+        - libc6-dev
+        - zlib1g-dev
+        - libsqlite3-dev
+        - tk-dev
+        - libssl-dev
+        - openssl
+        - libbz2-dev
+        - libreadline-dev
+    - name: install pyenv
+      git: repo=https://github.com/yyuu/pyenv.git dest=/home/pi/.pyenv
+    - name: install python with pyenv
+      shell: |
+        export PYENV_ROOT=$HOME/.pyenv
+        export PATH=$PYENV_ROOT/bin:$PATH
+        eval "$(pyenv init -)"
+        export PYTHON_ROOT=$(pyenv prefix)
+        if ! pyenv versions | grep {{ python_version }} 2>/dev/null ; then
+          pyenv install {{ python_version }}
+        fi
+    - name: install basic packages for python
+      shell: |
+        export PYENV_ROOT=$HOME/.pyenv
+        export PATH=$PYENV_ROOT/bin:$PATH
+        eval "$(pyenv init -)"
+        export PYTHON_ROOT=$(pyenv prefix)
+        pyenv global {{ python_version }}
+        pip install -U {{ item }}
+      with_items:
+        - virtualenv
+        - pip
