@@ -16,6 +16,7 @@ script:
   - bash -n install.sh
   - bash -n deploy.sh
   - bash -n run.sh
+  - bash -n kill.sh
   - |
     find python/raspi_server -name '*.py' -exec \
     pep8 --ignore=E402 --show-source --max-line-length=100 {} +

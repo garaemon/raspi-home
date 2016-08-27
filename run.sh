@@ -10,4 +10,4 @@ source env/bin/activate
 if [ -e $HOME/.slackbotrc ]; then
     source $HOME/.slackbotrc
 fi
-run_raspi_server.py
+screen -S raspi-server -d -m run_raspi_server.py
