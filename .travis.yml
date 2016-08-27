@@ -6,7 +6,7 @@ before_install:
   - sudo apt-get update -qq
 
 install:
-  - pip install ansible yamllint
+  - pip install ansible yamllint pep8
   # Add ansible.cfg to pick up roles path.
   # - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
 script:
@@ -16,6 +16,9 @@ script:
   - bash -n install.sh
   - bash -n deploy.sh
   - bash -n run.sh
+  - |
+    find python/raspi_server -name '*.py' -exec \
+    pep8 --ignore=E402 --show-source --max-line-length=100 {} +
   # ansible test
   - export SLACKBOT_API_TOKEN=dummy
   - ansible-playbook  -i localhost, ansible/raspi3.yaml --connection=local
