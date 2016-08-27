@@ -11,27 +11,28 @@
       apt: name={{item}} state=latest
       become: yes
       with_items:
-        - git
-        - tmux
-        - screen
+        - build-essential
         - chrony
         - curl
+        - espeak
+        - git
+        - htop
+        - hts-voice-nitech-jp-atr503-m001
+        - libbz2-dev
+        - libc6-dev
+        - libgdbm-dev
+        - libncursesw5-dev
+        - libreadline-dev
+        - libsqlite3-dev
+        - libssl-dev
         - mplayer
         - open-jtalk
         - open-jtalk-mecab-naist-jdic
-        - hts-voice-nitech-jp-atr503-m001
-        - htop
-        - build-essential
-        - libncursesw5-dev
-        - libgdbm-dev
-        - libc6-dev
-        - zlib1g-dev
-        - libsqlite3-dev
-        - tk-dev
-        - libssl-dev
         - openssl
-        - libbz2-dev
-        - libreadline-dev
+        - screen
+        - tk-dev
+        - tmux
+        - zlib1g-dev
     - name: install pyenv
       git: repo=https://github.com/yyuu/pyenv.git dest=$HOME/.pyenv
     - name: install python with pyenv
