@@ -13,7 +13,7 @@ def main():
     bot = Bot()
     bot.run()
     bot.send_message_to("iot_channel", "booted")
-    say("サーバーを立ち上げました")
+    # say("サーバーを立ち上げました")
     bot.loop()
 
 if __name__ == '__main__':

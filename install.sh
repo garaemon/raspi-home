@@ -29,4 +29,3 @@ cd python
 source env/bin/activate
 pip install -U -r requirements.txt
 python setup.py install
-espeak -s 100 "Installed" 2>/dev/null
