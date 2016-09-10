@@ -2,12 +2,17 @@
 Provide Bot class to wrap slackbot.bot.Bot class with better interface.
 """
 # Wrapper of slackbot.bot.Bot
-import slackbot.bot
+from slackbot.bot import Bot as SlackBot
 from six.moves import _thread
 
 
-class Bot(slackbot.bot.Bot):
+class Bot(SlackBot):
     "Wrapper class of slackbot.bot.Bot"
+    def __new__(cls, *args, **kwargs):
+        if not hasattr(cls, "__instance__"):
+            cls.__instance__ = SlackBot.__new__(cls, *args, **kwargs)
+        return cls.__instance__
+
     def run(self):
         "It does not run main loop, just initialization"
         self._plugins.init_plugins()
@@ -25,6 +30,7 @@ class Bot(slackbot.bot.Bot):
 
     def send_message_to(self, channel, message):
         "send message to specified channel"
+        print "Posting message to {}: {}".format(channel, message)
         self.get_client().rtm_send_message(self.get_channel(channel),
                                            message)
 
