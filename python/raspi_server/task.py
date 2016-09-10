@@ -7,12 +7,10 @@ slack message.
 
 from utils.exceptions import MethodNotImplemented
 
+
 class Task:
-    def __init__(self, name):
-        self.name = name
+    def match(self, channel, text, message):
+        raise MethodNotImplemented("Task.match is not implemented yet")
 
-    def match(self, message):
-        raise MethodNotImplemented
-
-    def invoke(self, message):
-        pass
+    def invoke(self, channel, text, message):
+        raise MethodNotImplemented("Task.invoke is not implemented yet")
