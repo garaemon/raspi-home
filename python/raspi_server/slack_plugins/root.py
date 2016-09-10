@@ -5,14 +5,16 @@
 import re
 from slackbot.bot import listen_to
 
-from raspi_server.say import say
+from raspi_server.dispatcher import Dispatcher
 
 
 @listen_to('.*', re.IGNORECASE)
 def all_message_dispatch(message):
     "dispatch according to any received messages"
-    if message.channel._body['name'] == 'iot_speach':
-        say(message._body['text'].encode('utf-8'))
-    elif message.channel._body['name'] == 'iot_weather':
-        say("雨が振りそうです。洗濯物をたたんでください")
-        message.reply("Spoken")
+    dispatcher = Dispatcher()
+    dispatcher.dispatch(message)
+    # if message.channel._body['name'] == 'iot_speach':
+    #     say(message._body['text'].encode('utf-8'))
+    # elif message.channel._body['name'] == 'iot_weather':
+    #     say("雨が振りそうです。洗濯物をたたんでください")
+    #     message.reply("Spoken")
