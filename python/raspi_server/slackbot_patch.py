@@ -17,9 +17,12 @@ def on_new_message_allow_bot_message(self, msg):
     subtype = msg.get('subtype', '')
     if subtype == u'message_changed':
         return
+    botname = self._client.login_data['self']['name']
     try:
         msguser = self._client.users.get(msg['user'])
         username = msguser['name']
+        if username == botname:
+            return
     except (KeyError, TypeError):
         if 'username' in msg:
             username = msg['username']
