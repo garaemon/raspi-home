@@ -8,11 +8,17 @@ import os
 
 from raspi_server.bot import Bot
 from raspi_server.slackbot_patch import apply_patches
+from raspi_server.dispatcher import Dispatcher
+from raspi_server.tasks.hi import HiTask
+from raspi_server.tasks.speach import SpeachTask
+from raspi_server.tasks.weather import WeatherTask
 # from raspi_server.say import say
 
 
 def main():
     "main function"
+    dispatcher = Dispatcher()
+    dispatcher.registerTasks([HiTask(), SpeachTask(), WeatherTask()])
     bot = Bot()
     apply_patches(bot)
     bot.run()
