@@ -16,7 +16,7 @@ script:
   - bash -n run.sh
   - bash -n kill.sh
   - |
-    find python/raspi_server -name '*.py' -exec \
+    find raspi_home -name '*.py' -exec \
     pep8 --ignore=E402 --show-source --max-line-length=100 {} +
   # ansible test
   - export SLACKBOT_API_TOKEN=dummy

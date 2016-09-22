@@ -17,15 +17,5 @@ if ! pyenv versions | grep $PYTHON_VERSION; then
     pyenv install $PYTHON_VERSION
 fi
 
-# setup virtualenv
-if [ ! -e python/env ] ; then
-    (cd python &&
-     pyenv local $PYTHON_VERSION &&
-     virtualenv env)
-fi
-
-cd python
-
-source env/bin/activate
-pip install -U -r requirements.txt
-python setup.py install
+pyenv shell $PYTHON_VERSION
+make
