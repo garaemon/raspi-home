@@ -15,5 +15,5 @@ class WeatherTask(Task):
         return channel == "iot_weather"
 
     def invoke(self, channel, text, message):
-        say("雨が振りそうです。洗濯物をとりこんで")
+        say("雨が振りそうです。洗濯物をとりこんでください")
         message.reply("Spoken")
