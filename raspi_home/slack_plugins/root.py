@@ -5,7 +5,7 @@
 import re
 from slackbot.bot import listen_to
 
-from raspi_server.dispatcher import Dispatcher
+from raspi_home.dispatcher import Dispatcher
 
 
 @listen_to('.*', re.IGNORECASE)

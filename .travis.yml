@@ -1,5 +1,11 @@
 language: python
 python: '2.7'
+addons:
+  apt:
+    sources:
+    - debian-sid    # Grab shellcheck from the Debian repo (o_O)
+    packages:
+    - shellcheck
 notifications:
   slack:
     secure: vkltMElp68u5EDRgcwqwKH6e+M4gVoEaClKp73A3iW7RwzrrwJDVXunbhwcn8sLMDW/ONJcU4Xy1NV5D6QChaofRjJEnFhBjgXpW1Se5VMH9DE9sJC9ZbJiiFhTb7dwnKyBJ5CZYUIlAC3IghvGmeZHmzLWpn9UcGSl85OUZQALs/D95ZRmHoDTOjFfnFTuGT0aR4flnKCoUkAD0Cmy6SXAbZZedp/FBGRoFGQVz1+8soB2tTcszH1UvgbferPCnHuA6RxLT2knuFjH2VLyfKh0GiDJTnJuV0cot8YKJYsslltrJtwCxBp3eyFGw6Qz6sYPUWcLesy7J/qztyh8op8gJCGgecsuGVr6/c5kdaIKsE9K1LiL+MYQoKVBXCRqXUp+xmAenfu0ValxxpzCVIngOvlpH3wbG+0MV+AIfz0pfvMBFy7U56ryuQsRNFUbcBuA8qmWQ5+utzAb996c1Ls3q2lSVNG87PY9zM9zbhmlZoqXKcGW6c8Nn0nIJZlwwObcPnjc7pbjsY5+9S56D/YTXefvOSl/oqgOyHjuUx40T9ONF6zQ4kyaijeoE5AahJzgeeZWNX6V1nTLOz4H2EMJe1H35FPqQ9YpKFX/XXYwoHU0I2QuyzIbPS9HJ3Y7JJnDJXoBoDFiToKtaQC+qaYxFJh1oVH39DUJODbNF5T8=
@@ -8,18 +14,10 @@ before_install:
 install:
 - pip install ansible yamllint pep8
 script:
-  # syntax check
-  - yamllint ansible/raspi3.yaml
-  - ansible-playbook  ansible/raspi3.yaml --syntax-check
-  - bash -n install.sh
-  - bash -n deploy.sh
-  - bash -n run.sh
-  - bash -n kill.sh
-  - |
-    find python/raspi_server -name '*.py' -exec \
-    pep8 --ignore=E402 --show-source --max-line-length=100 {} +
+  - ./test/check_syntax.sh
   # ansible test
   - export SLACKBOT_API_TOKEN=dummy
-  - ansible-playbook  -i localhost, ansible/raspi3.yaml --connection=local
+  # - ansible-playbook  -i localhost, ansible/raspi3.yaml --connection=local
+  - git clone https://github.com/yyuu/pyenv.git ~/.pyenv
   # test install.sh
   - ./install.sh

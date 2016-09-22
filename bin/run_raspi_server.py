@@ -6,14 +6,13 @@ run raspi home server
 
 import os
 
-from raspi_server.bot import Bot
-from raspi_server.slackbot_patch import apply_patches
-from raspi_server.dispatcher import Dispatcher
-from raspi_server.tasks.hi import HiTask
-from raspi_server.tasks.speach import SpeachTask
-from raspi_server.tasks.weather import WeatherTask
-from raspi_server.tasks.youtube_audio import YoutubeAudioTask
-# from raspi_server.say import say
+from raspi_home.bot import Bot
+from raspi_home.slackbot_patch import apply_patches
+from raspi_home.dispatcher import Dispatcher
+from raspi_home.tasks.hi import HiTask
+from raspi_home.tasks.speach import SpeachTask
+from raspi_home.tasks.weather import WeatherTask
+from raspi_home.tasks.youtube_audio import YoutubeAudioTask
 
 
 def main():

@@ -10,11 +10,11 @@ fi
 TARGET_IP=$1
 TARGET_DIR=$2
 
-script_dir=$(cd $(dirname $BASH_SOURCE); pwd)
-cd $script_dir
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)"
+cd "$script_dir"
 
-git ls-files -z | rsync --files-from - --copy-links -av0 . $TARGET_IP:$TARGET_DIR
+git ls-files -z | rsync --files-from - --copy-links -av0 . "$TARGET_IP":"$TARGET_DIR"
 unset LC_ALL
-ssh $TARGET_IP $TARGET_DIR/install.sh
-ssh $TARGET_IP $TARGET_DIR/kill.sh
-ssh $TARGET_IP $TARGET_DIR/run.sh
+ssh "$TARGET_IP" "$TARGET_DIR"/install.sh
+ssh "$TARGET_IP" "$TARGET_DIR"/kill.sh
+ssh "$TARGET_IP" "$TARGET_DIR"/run.sh
