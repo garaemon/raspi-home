@@ -13,7 +13,6 @@ from raspi_home.tasks.hi import HiTask
 from raspi_home.tasks.speach import SpeachTask
 from raspi_home.tasks.weather import WeatherTask
 from raspi_home.tasks.youtube_audio import YoutubeAudioTask
-# from raspi_home.say import say
 
 
 def main():
