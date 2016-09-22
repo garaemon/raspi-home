@@ -12,13 +12,15 @@ from raspi_server.dispatcher import Dispatcher
 from raspi_server.tasks.hi import HiTask
 from raspi_server.tasks.speach import SpeachTask
 from raspi_server.tasks.weather import WeatherTask
+from raspi_server.tasks.youtube_audio import YoutubeAudioTask
 # from raspi_server.say import say
 
 
 def main():
     "main function"
     dispatcher = Dispatcher()
-    dispatcher.registerTasks([HiTask(), SpeachTask(), WeatherTask()])
+    dispatcher.registerTasks([HiTask(), SpeachTask(),
+                              WeatherTask(), YoutubeAudioTask()])
     bot = Bot()
     apply_patches(bot)
     bot.run()
