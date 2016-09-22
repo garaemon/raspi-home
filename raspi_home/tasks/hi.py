@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from raspi_server.task import Task
+from raspi_home.task import Task
 import re
 
 

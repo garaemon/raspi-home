@@ -3,8 +3,8 @@
 Speach message posted in iot_speach channel
 """
 
-from raspi_server.say import say
-from raspi_server.task import Task
+from raspi_home.say import say
+from raspi_home.task import Task
 
 
 class SpeachTask(Task):

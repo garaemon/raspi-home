@@ -5,7 +5,7 @@ Task class to wrap callback function according to
 slack message.
 """
 
-from raspi_server.utils.exceptions import MethodNotImplemented
+from .utils.exceptions import MethodNotImplemented
 
 
 class Task:
