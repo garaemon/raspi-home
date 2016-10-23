@@ -5,6 +5,10 @@ run raspi home server
 """
 
 import os
+import sys
+
+# first, add ../ to PYTHONPATH to import raspi_home
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from raspi_home.bot import Bot
 from raspi_home.slackbot_patch import apply_patches

@@ -1,3 +1,3 @@
 PLUGINS = [
-    'raspi_server.slack_plugins',
+    'raspi_home.slack_plugins',
 ]
