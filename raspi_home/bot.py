@@ -2,8 +2,10 @@
 Provide Bot class to wrap slackbot.bot.Bot class with better interface.
 """
 # Wrapper of slackbot.bot.Bot
-from slackbot.bot import Bot as SlackBot
+import logging
+
 from six.moves import _thread
+from slackbot.bot import Bot as SlackBot
 
 
 class Bot(SlackBot):
@@ -30,7 +32,7 @@ class Bot(SlackBot):
 
     def send_message_to(self, channel, message):
         "send message to specified channel"
-        print "Posting message to {}: {}".format(channel, message)
+        logging.info("Posting message to {}: {}".format(channel, message))
         self.get_client().rtm_send_message(self.get_channel(channel),
                                            message)
 

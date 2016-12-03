@@ -11,9 +11,10 @@ from sys import platform
 
 
 def jtalk_linux(text, block=False):
-    """speach text with open_jtalk and aplay on linux.
+    '''
+    speach text with open_jtalk and aplay on linux.
     In fact, we expect Ubuntu.
-    """
+'''
     open_jtalk = ['open_jtalk']
     mech = ['-x', '/var/lib/mecab/dic/open-jtalk/naist-jdic']
     htsvoice = ['-m', '/usr/share/hts-voice/mei/mei_normal.htsvoice']
@@ -21,7 +22,7 @@ def jtalk_linux(text, block=False):
     outwav = ['-ow', 'open_jtalk.wav']
     cmd = open_jtalk + mech + htsvoice + speed + outwav
     jtalk_process = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-    jtalk_process.stdin.write(text)
+    jtalk_process.stdin.write(text.encode('utf-8'))
     jtalk_process.stdin.close()
     jtalk_process.wait()
     aplay = ['aplay', '-q', 'open_jtalk.wav']

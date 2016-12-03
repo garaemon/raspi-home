@@ -1,15 +1,16 @@
 colorama==0.3.7
+coloredlogs==5.2
 configparser==3.5.0
 enum34==1.1.6
 eyeD3==0.7.9
 flake8==3.0.4
+humanfriendly==2.1
 logutils==0.3.3
 mccabe==0.5.2
 pycodestyle==2.0.0
 pyflakes==1.2.3
 rainbow-logging-handler==2.2.2
 requests==2.11.1
-six==1.10.0
 slackbot==0.4.1
 slacker==0.9.24
 websocket-client==0.37.0

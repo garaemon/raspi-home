@@ -5,10 +5,12 @@ Dispatch according to received message.
 Dispathcer class is a singleton class.
 """
 
+import logging
+
 
 class Dispatcher(object):
     def __new__(cls, *args, **kwargs):
-        print "Dispatcher.__new__ is called"
+        logging.debug("Dispatcher.__new__ is called")
         if not hasattr(cls, "__instance__"):
             # store one object in __instance__ field to achieve
             # singleton class.
@@ -16,12 +18,12 @@ class Dispatcher(object):
         return cls.__instance__
 
     def __init__(self):
-        print "Dispatcher.__init__ is called"
+        logging.debug("Dispatcher.__init__ is called")
         if not hasattr(self, "tasks"):
             self.tasks = []
 
     def registerTask(self, task):
-        print "Register a task: {}".format(task)
+        logging.info("Register a task: {}".format(task))
         self.tasks.append(task)
 
     def registerTasks(self, tasks):
@@ -29,10 +31,8 @@ class Dispatcher(object):
             self.registerTask(t)
 
     def dispatch(self, message):
-        print "Dispatch!"
+        logging.info("Dispatch!")
         channel = message.channel._body['name']
-        print dir(message.body)
-        print message.body
         try:
             text = message.body['attachments'][0]['text']
         except:

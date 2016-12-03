@@ -5,7 +5,7 @@ Apply patch to skypebot:
 - Allow message by bot
 """
 
-from slackbot.dispatcher import MessageDispatcher, Message
+from slackbot.dispatcher import Message, MessageDispatcher
 import logging
 import traceback
 
@@ -50,7 +50,7 @@ def dispatch_msg_handler_with_bot_message(self, category, msg):
             responded = True
             try:
                 func(Message(self._client, msg), *args)
-            except:
+            except Exception:
                 logger.exception(
                     'failed to handle message %s with plugin "%s"',
                     text, func.__name__)
@@ -60,11 +60,11 @@ def dispatch_msg_handler_with_bot_message(self, category, msg):
                 if self._errors_to:
                     self._client.rtm_send_message(msg['channel'], reply)
                     self._client.rtm_send_message(self._errors_to,
-                                                  '{}\n{}'.format(reply,
+                                                  u'{}\n{}'.format(reply,
                                                                   tb))
                 else:
                     self._client.rtm_send_message(msg['channel'],
-                                                  '{}\n{}'.format(reply,
+                                                  u'{}\n{}'.format(reply,
                                                                   tb))
     return responded
 

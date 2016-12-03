@@ -5,16 +5,22 @@
 Convert youtube movie to mp3
 """
 from __future__ import unicode_literals
-from raspi_home.task import Task
+
 import datetime
-import eyed3
 import json
+import logging
 import os
 import threading
+
+import coloredlogs
+import eyed3
 import youtube_dl
 
 
-class TargetData:
+from raspi_home.task import Task
+
+
+class TargetData(object):
     BASE_OUTPUT_NAME = "downloaded_file"
     SUFFIX = "mp3"
 
@@ -34,16 +40,19 @@ class TargetData:
         output_filename = os.path.join('/tmp', "_".join([self.BASE_OUTPUT_NAME, date_str]))
         ydl_opts = {'audioformat': 'mp3', 'format': 'bestaudio/best',
                     'outtmpl': '{}.%(ext)s'.format(output_filename),
+                    'quiet': True,
                     'postprocessors': [{
                         'key': 'FFmpegExtractAudio',
                         'preferredcodec': 'mp3',
                         'preferredquality': '5',
                         'nopostoverwrites': False,
                     }]}
-        print 'url ==> ', self.url
+        logging.info('youtube url ==> ', self.url)
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(self.url, download=False)
-            print 'Download {} from {}'.format(info.get('url'), info.get('title'))
+            logging.info('Download \'{}\' from \'{}\' to \'{}\''.format(
+                info.get('url'),
+                info.get('title'), output_filename))
             ydl.download([self.url])
         self.updateTagInformation(output_filename + '.mp3', info)
         # self.uploadToGoogleMusic(output_filename + '.mp3')
@@ -65,10 +74,10 @@ class YoutubeAudioTask(Task):
                 if "url" in json_obj and "artist" in json_obj and "album" in json_obj:
                     return True
                 else:
-                    print "It's not for youtube_audio json"
+                    logging.error("It's not for youtube_audio json")
                     return False
-            except:
-                print "It's not json"
+            except Exception:
+                logging.error("It's not json")
                 return False
         else:
             return False
@@ -77,7 +86,7 @@ class YoutubeAudioTask(Task):
         try:
             data.download()
             message.reply("download finished. But google music uploading is not supported yet")
-        except:
+        except Exception:
             message.reply("failed to download")
 
     def invoke(self, channel, text, message):
@@ -89,7 +98,7 @@ class YoutubeAudioTask(Task):
 
 
 def demo_onefile():
-    print "Running demo_onefile"
+    logging.info("Running demo_onefile: download MJ and PM's say say say")
     test_data1 = TargetData(u'''
     {
       "url": "https://www.youtube.com/watch?v=Hq5KAdWJiWY",
@@ -100,4 +109,9 @@ def demo_onefile():
     test_data1.download()
 
 if __name__ == "__main__":
+    field_styles = coloredlogs.DEFAULT_FIELD_STYLES
+    field_styles['levelname'] = {'color': 'white', 'bold': True}
+    coloredlogs.install(level=logging.INFO,
+                        fmt='%(asctime)s [%(levelname)s] %(message)s',
+                        field_styles=field_styles)
     demo_onefile()

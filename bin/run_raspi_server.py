@@ -6,13 +6,16 @@ run raspi home server
 
 import os
 import sys
+import logging
 
 # first, add ../ to PYTHONPATH to import raspi_home
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
+import coloredlogs
+
 from raspi_home.bot import Bot
-from raspi_home.slackbot_patch import apply_patches
 from raspi_home.dispatcher import Dispatcher
+from raspi_home.slackbot_patch import apply_patches
 from raspi_home.tasks.hi import HiTask
 from raspi_home.tasks.speach import SpeachTask
 from raspi_home.tasks.weather import WeatherTask
@@ -21,6 +24,12 @@ from raspi_home.tasks.youtube_audio import YoutubeAudioTask
 
 def main():
     "main function"
+    # setup coloredlogs
+    field_styles = coloredlogs.DEFAULT_FIELD_STYLES
+    field_styles['levelname'] = {'color': 'white', 'bold': True}
+    coloredlogs.install(level=logging.INFO,
+                        fmt='%(asctime)s [%(levelname)s] %(message)s',
+                        field_styles=field_styles)
     dispatcher = Dispatcher()
     dispatcher.registerTasks([HiTask(), SpeachTask(),
                               WeatherTask(), YoutubeAudioTask()])
