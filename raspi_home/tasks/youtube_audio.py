@@ -78,11 +78,7 @@ class YoutubeAudioTask(Task):
                 else:
                     logging.error("It's not for youtube_audio json")
                     return False
-<<<<<<< HEAD
-            except:
-=======
             except Exception:
->>>>>>> origin/master
                 logging.error("It's not json")
                 return False
         else:
@@ -104,11 +100,7 @@ class YoutubeAudioTask(Task):
 
 
 def demo_onefile():
-<<<<<<< HEAD
-    logging.info("Running demo_onefile")
-=======
     logging.info("Running demo_onefile: download MJ and PM's say say say")
->>>>>>> origin/master
     test_data1 = TargetData(u'''
     {
       "url": "https://www.youtube.com/watch?v=Hq5KAdWJiWY",
