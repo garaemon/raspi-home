@@ -23,7 +23,7 @@ class Dispatcher(object):
             self.tasks = []
 
     def registerTask(self, task):
-        logging.info("Register a task: {}".format(task))
+        logging.debug("Register a task: {}".format(task))
         self.tasks.append(task)
 
     def registerTasks(self, tasks):
@@ -31,7 +31,7 @@ class Dispatcher(object):
             self.registerTask(t)
 
     def dispatch(self, message):
-        logging.info("Dispatch!")
+        logging.debug("Dispatch!")
         channel = message.channel._body['name']
         try:
             text = message.body['attachments'][0]['text']

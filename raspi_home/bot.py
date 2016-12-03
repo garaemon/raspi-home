@@ -1,6 +1,8 @@
 """
 Provide Bot class to wrap slackbot.bot.Bot class with better interface.
 """
+import logging
+
 # Wrapper of slackbot.bot.Bot
 import logging
 
@@ -33,6 +35,14 @@ class Bot(SlackBot):
     def send_message_to(self, channel, message):
         "send message to specified channel"
         logging.info("Posting message to {}: {}".format(channel, message))
+        self.get_client().rtm_send_message(self.get_channel(channel),
+                                           message)
+
+    def send_message_to_wo_logging(self, channel, message):
+        """
+        Special method to send message to slack channel without logging.
+        This method is designed for usage in loging handler like utils.logger.SlackHandler.
+        """
         self.get_client().rtm_send_message(self.get_channel(channel),
                                            message)
 
