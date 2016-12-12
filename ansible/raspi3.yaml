@@ -15,6 +15,7 @@
         - git
         - htop
         - hts-voice-nitech-jp-atr503-m001
+        - libav-tools
         - libbz2-dev
         - libc6-dev
         - libgdbm-dev

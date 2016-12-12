@@ -17,9 +17,7 @@ import eyed3
 import youtube_dl
 
 from raspi_home.task import Task
-
-
-from raspi_home.task import Task
+from raspi_home.utils.googleplaymusic import GMClient
 
 
 class TargetData(object):
@@ -37,12 +35,13 @@ class TargetData(object):
         self.artist = json_obj["artist"]
         self.album = json_obj["album"]
 
-    def download(self):
+    def download(self, message, upload=True):
         date_str = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
         output_filename = os.path.join('/tmp', "_".join([self.BASE_OUTPUT_NAME, date_str]))
         ydl_opts = {'audioformat': 'mp3', 'format': 'bestaudio/best',
                     'outtmpl': '{}.%(ext)s'.format(output_filename),
                     'quiet': True,
+                    'nocheckcertificate': True,
                     'postprocessors': [{
                         'key': 'FFmpegExtractAudio',
                         'preferredcodec': 'mp3',
@@ -50,14 +49,28 @@ class TargetData(object):
                         'nopostoverwrites': False,
                     }]}
         logging.info('youtube url ==> ', self.url)
+        if message:
+            message.reply("Start downloading from {}".format(self.url))
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(self.url, download=False)
             logging.info('Download \'{}\' from \'{}\' to \'{}\''.format(
                 info.get('url'),
                 info.get('title'), output_filename))
             ydl.download([self.url])
+        if message:
+            message.reply("Done downloading to {}.mp3".format(output_filename))
+            message.reply("Updating tag information")
         self.updateTagInformation(output_filename + '.mp3', info)
-        # self.uploadToGoogleMusic(output_filename + '.mp3')
+        if upload:
+            if message:
+                message.reply("Start uploading")
+            logging.info('Uploading to gmusic')
+            gmusic_client = GMClient()
+            gmusic_client.login()
+            gmusic_client.upload(output_filename + '.mp3')
+            if message:
+                message.reply("Done uploading")
+            logging.info("Done uploading")
 
     def updateTagInformation(self, filename, info):
         audiofile = eyed3.load(filename)
@@ -69,6 +82,8 @@ class TargetData(object):
 
 class YoutubeAudioTask(Task):
     def match(self, channel, text, message):
+        text = text.replace(u'”', u'"').replace(u'“', u'"')  # fix closing double quotes
+        logging.info("text: {}".format(text))
         if channel == "iot_youtube_audio":
             try:
                 # try to parse as json
@@ -78,20 +93,20 @@ class YoutubeAudioTask(Task):
                 else:
                     logging.error("It's not for youtube_audio json")
                     return False
-            except Exception:
-                logging.error("It's not json")
+            except Exception, e:
+                logging.error("It's not json: {}".format(e.message))
                 return False
         else:
             return False
 
     def download_async(self, data, message):
         try:
-            data.download()
-            message.reply("download finished. But google music uploading is not supported yet")
-        except Exception:
-            message.reply("failed to download")
+            data.download(message, upload=True)
+        except Exception, e:
+            message.reply("failed to download: {}".format(e.message))
 
     def invoke(self, channel, text, message):
+        text = text.replace(u'”', u'"').replace(u'“', u'"')  # fix closing double quotes
         data = TargetData(text)
         message.reply("received message")
         thread = threading.Thread(target=self.download_async, args=(data, message))
@@ -108,7 +123,7 @@ def demo_onefile():
       "album": "test from youtube_audio.py"
     }
     ''')
-    test_data1.download()
+    test_data1.download(None)
 
 if __name__ == "__main__":
     field_styles = coloredlogs.DEFAULT_FIELD_STYLES

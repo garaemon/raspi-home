@@ -23,17 +23,13 @@ from raspi_home.tasks.hi import HiTask
 from raspi_home.tasks.speach import SpeachTask
 from raspi_home.tasks.weather import WeatherTask
 from raspi_home.tasks.youtube_audio import YoutubeAudioTask
-from raspi_home.utils.logger import SlackHandler
+from raspi_home.utils.logger import SlackHandler, init_logging
+
 
 def main():
     "main function"
     # setup logging
-    field_styles = coloredlogs.DEFAULT_FIELD_STYLES
-    field_styles['levelname'] = {'color': 'white', 'bold': True}
-    log_format = '%(asctime)s {} [%(levelname)s] %(message)s'.format(gethostname())
-    coloredlogs.install(level=logging.INFO,
-                        fmt=log_format,
-                        field_styles=field_styles)
+    log_format = init_logging()
     dispatcher = Dispatcher()
     dispatcher.registerTasks([HiTask(), SpeachTask(),
                               WeatherTask(), YoutubeAudioTask()])

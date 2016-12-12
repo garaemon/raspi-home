@@ -5,6 +5,9 @@ Logger to broadcast message to slack.
 '''
 
 import logging
+from socket import gethostname
+
+import coloredlogs
 
 
 class SlackHandler(logging.Handler):
@@ -23,3 +26,14 @@ class SlackHandler(logging.Handler):
                 self.bot.send_message_to_wo_logging(self.log_channel, self.format(record))
             except Exception:
                 pass
+
+
+def init_logging():
+    "Function to initialize logger"
+    field_styles = coloredlogs.DEFAULT_FIELD_STYLES
+    field_styles['levelname'] = {'color': 'white', 'bold': True}
+    log_format = '%(asctime)s {} [%(levelname)s] %(message)s'.format(gethostname())
+    coloredlogs.install(level=logging.INFO,
+                        fmt=log_format,
+                        field_styles=field_styles)
+    return log_format
