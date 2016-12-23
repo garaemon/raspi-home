@@ -89,10 +89,11 @@ class GMClient(object):
 
     # methods communicating with google server
     def update_songs(self):
-        if self.is_available:
-            self.all_songs = self.api.get_all_songs()
-        else:
-            logging.warn('gmusicapi is not available')
+        # if self.api is not None:
+        #     self.all_songs = self.api.get_all_songs()
+        # else:
+        #     self.all_songs = []
+        self.all_songs = self.man.get_uploaded_songs()
 
     def get_all_songs(self):
         if self.all_songs is None:
@@ -108,7 +109,10 @@ class GMClient(object):
         else:
             (uploaded, matched, not_uploaded) = self.man.upload([file], enable_matching=True)
             if not_uploaded:
-                logger.error("not uploaded because {}".format(not_uploaded))
+                logging.error("not uploaded because {}".format(not_uploaded))
+
+    def has_song(self, title):
+        return title in [song['title'] for song in self.get_all_songs()]
 
 
 def get_cli_argparser():

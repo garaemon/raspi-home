@@ -50,12 +50,32 @@ class TargetData(object):
                     }]}
         logging.info('youtube url ==> ', self.url)
         if message:
-            message.reply("Start downloading from {}".format(self.url))
+            message.reply("Received download request from {}".format(self.url))
+        if upload:
+            logging.info('Logging in to gmusic')
+            gmusic_client = GMClient()
+            gmusic_client.login()
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(self.url, download=False)
+            if upload:
+                # check the song is already uploaded
+                if gmusic_client.has_song(info.get('title')):
+                    warn_message = u"{} is already uploaded. skip downloading".format(
+                        info.get('title'))
+                    logging.warn(warn_message)
+                    if message:
+                        message.reply(warn_message)
+                    return
+                else:
+                    logging.info(u"{} is not uploaded yet".format(
+                        info.get('title')))
             logging.info('Download \'{}\' from \'{}\' to \'{}\''.format(
                 info.get('url'),
                 info.get('title'), output_filename))
+            if message:
+                message.reply('Download \'{}\' from \'{}\' to \'{}\''.format(
+                    info.get('url'),
+                    info.get('title'), output_filename))
             ydl.download([self.url])
         if message:
             message.reply("Done downloading to {}.mp3".format(output_filename))
@@ -65,8 +85,6 @@ class TargetData(object):
             if message:
                 message.reply("Start uploading")
             logging.info('Uploading to gmusic')
-            gmusic_client = GMClient()
-            gmusic_client.login()
             gmusic_client.upload(output_filename + '.mp3')
             if message:
                 message.reply("Done uploading")

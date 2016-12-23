@@ -24,15 +24,21 @@ class SlackHandler(logging.Handler):
         if self.bot and self.log_channel:
             try:
                 self.bot.send_message_to_wo_logging(self.log_channel, self.format(record))
-            except Exception:
-                pass
+            except Exception as e:
+                print('slack Exception: {}'.format(e))
+                print('Try to logging one more time')
+                try:
+                    self.bot.send_message_to_wo_logging(self.log_channel, self.format(record))
+                except Exception as e:
+                    print('second slack Exception: {}'.format(e))
 
 
 def init_logging():
     "Function to initialize logger"
     field_styles = coloredlogs.DEFAULT_FIELD_STYLES
     field_styles['levelname'] = {'color': 'white', 'bold': True}
-    log_format = '%(asctime)s {} [%(levelname)s] %(message)s'.format(gethostname())
+    log_format = '%(asctime)s {} [%(levelname)s] [%(filename)s:%(lineno)d] %(message)s'.format(
+        gethostname())
     coloredlogs.install(level=logging.INFO,
                         fmt=log_format,
                         field_styles=field_styles)
