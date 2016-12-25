@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-Apply patch to skypebot:
+'''
+Apply patch to slackbot:
 - Allow message by bot
-"""
+'''
 
-from slackbot.dispatcher import Message, MessageDispatcher
 import logging
 import traceback
+
+from slackbot.dispatcher import Message
+from slackbot.dispatcher import MessageDispatcher
 
 logger = logging.getLogger(__name__)
 
@@ -60,12 +62,10 @@ def dispatch_msg_handler_with_bot_message(self, category, msg):
                 if self._errors_to:
                     self._client.rtm_send_message(msg['channel'], reply)
                     self._client.rtm_send_message(self._errors_to,
-                                                  u'{}\n{}'.format(reply,
-                                                                  tb))
+                                                  u'{}\n{}'.format(reply, tb))
                 else:
                     self._client.rtm_send_message(msg['channel'],
-                                                  u'{}\n{}'.format(reply,
-                                                                  tb))
+                                                  u'{}\n{}'.format(reply, tb))
     return responded
 
 

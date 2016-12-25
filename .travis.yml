@@ -12,7 +12,8 @@ notifications:
 before_install:
 - sudo apt-get update -qq
 install:
-- pip install ansible yamllint pep8
+- pip install ansible yamllint pep8 hacking flake8 flake8-import-order
+- pip install mccabe -U
 script:
   - ./test/check_syntax.sh
   # ansible test

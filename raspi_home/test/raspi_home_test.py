@@ -1,4 +1,5 @@
-from unittest import TestCase, skip
+from unittest import skip
+from unittest import TestCase   # noqa: I100
 
 
 class raspi_homeTest(TestCase):

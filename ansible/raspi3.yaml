@@ -6,7 +6,7 @@
   tasks:
     - name: Install apt packages
       apt: name={{item}} state=latest
-      become: yes
+      become: "yes"
       with_items:
         - build-essential
         - chrony

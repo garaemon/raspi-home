@@ -4,26 +4,22 @@
 run raspi home server
 """
 
+import logging
 import os
 import sys
-import logging
-from socket import gethostname
-
-import coloredlogs
 
 # first, add ../ to PYTHONPATH to import raspi_home
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
-import coloredlogs
-
-from raspi_home.bot import Bot
-from raspi_home.dispatcher import Dispatcher
-from raspi_home.slackbot_patch import apply_patches
-from raspi_home.tasks.hi import HiTask
-from raspi_home.tasks.speach import SpeachTask
-from raspi_home.tasks.weather import WeatherTask
-from raspi_home.tasks.youtube_audio import YoutubeAudioTask
-from raspi_home.utils.logger import SlackHandler, init_logging
+from raspi_home.bot import Bot  # noqa: E402
+from raspi_home.dispatcher import Dispatcher  # noqa: E402
+from raspi_home.slackbot_patch import apply_patches  # noqa: E402
+from raspi_home.tasks.hi import HiTask  # noqa: E402
+from raspi_home.tasks.speach import SpeachTask  # noqa: E402
+from raspi_home.tasks.weather import WeatherTask  # noqa: E402
+from raspi_home.tasks.youtube_audio import YoutubeAudioTask  # noqa: E402
+from raspi_home.utils.logger import init_logging  # noqa: E402
+from raspi_home.utils.logger import SlackHandler  # noqa: E402
 
 
 def main():
@@ -44,6 +40,7 @@ def main():
     logging.info("booted")
     # say("サーバーを立ち上げました")
     bot.loop()
+
 
 if __name__ == '__main__':
     # check os.environ

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 '''
 Logger to broadcast message to slack.
 '''
@@ -8,13 +7,12 @@ import logging
 from socket import gethostname
 
 import coloredlogs
+
 from websocket import WebSocketConnectionClosedException
 
 
 class SlackHandler(logging.Handler):
-    """
-    Custom logging handler to output log message to slack.
-    """
+    'Custom logging handler to output log message to slack.'
 
     def __init__(self, bot, log_channel):
         self.bot = bot
@@ -33,7 +31,7 @@ class SlackHandler(logging.Handler):
 
 
 def init_logging():
-    "Function to initialize logger"
+    'Function to initialize logger.'
     field_styles = coloredlogs.DEFAULT_FIELD_STYLES
     field_styles['levelname'] = {'color': 'white', 'bold': True}
     log_format = '%(asctime)s {} [%(levelname)s] [%(filename)s:%(lineno)d] %(message)s'.format(

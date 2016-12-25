@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-from raspi_home.task import Task
 import re
+
+from raspi_home.task import Task
 
 
 class HiTask(Task):
-    "Respond to message which contains 'hi'."
+    'Respond to message which contains "hi".'
     def match(self, channel, text, message):
         return re.search(re.compile('hi', re.IGNORECASE), text)
 

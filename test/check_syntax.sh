@@ -18,8 +18,7 @@ ansible-playbook  ansible/raspi3.yaml --syntax-check
 title_echo "<< yaml OK"
 
 title_echo ">> checking python syntax"
-find . -name .venv -prune -type f -or -name '*.py' -type f -exec \
-     pep8 --ignore=E402 --show-source --max-line-length=100 {} \;
+flake8 .
 title_echo "<< python OK"
 
 title_echo ">> checking shell syntax"
