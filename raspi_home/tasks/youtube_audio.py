@@ -19,6 +19,11 @@ import youtube_dl
 from raspi_home.task import Task
 from raspi_home.utils.googleplaymusic import GMClient
 
+def message_safe_reply(message, msg):
+    try:
+        message.reply(msg)
+    except Exception:
+        pass
 
 class TargetData(object):
     BASE_OUTPUT_NAME = "downloaded_file"
@@ -50,7 +55,7 @@ class TargetData(object):
                     }]}
         logging.info('youtube url ==> ', self.url)
         if message:
-            message.reply("Received download request from {}".format(self.url))
+            message_safe_reply(message, "Received download request from {}".format(self.url))
         if upload:
             logging.info('Logging in to gmusic')
             gmusic_client = GMClient()
@@ -64,7 +69,7 @@ class TargetData(object):
                         info.get('title'))
                     logging.warn(warn_message)
                     if message:
-                        message.reply(warn_message)
+                        message_safe_reply(message, warn_message)
                     return
                 else:
                     logging.info(u"{} is not uploaded yet".format(
@@ -73,21 +78,21 @@ class TargetData(object):
                 info.get('url'),
                 info.get('title'), output_filename))
             if message:
-                message.reply('Download \'{}\' from \'{}\' to \'{}\''.format(
+                message_safe_reply(message, 'Download \'{}\' from \'{}\' to \'{}\''.format(
                     info.get('url'),
                     info.get('title'), output_filename))
             ydl.download([self.url])
         if message:
-            message.reply("Done downloading to {}.mp3".format(output_filename))
-            message.reply("Updating tag information")
+            message_safe_reply(message, "Done downloading to {}.mp3".format(output_filename))
+            message_safe_reply(message, "Updating tag information")
         self.updateTagInformation(output_filename + '.mp3', info)
         if upload:
             if message:
-                message.reply("Start uploading")
+                message_safe_reply(message, "Start uploading")
             logging.info('Uploading to gmusic')
             gmusic_client.upload(output_filename + '.mp3')
             if message:
-                message.reply("Done uploading")
+                message_safe_reply(message, "Done uploading")
             logging.info("Done uploading")
 
     def updateTagInformation(self, filename, info):
@@ -120,13 +125,14 @@ class YoutubeAudioTask(Task):
     def download_async(self, data, message):
         try:
             data.download(message, upload=True)
-        except Exception, e:
-            message.reply("failed to download: {}".format(e.message))
+        except Exception as e:
+            logging.error("failed to download: {}".format(e))
+            message_safe_reply(message, "failed to download: {}".format(e))
 
     def invoke(self, channel, text, message):
         text = text.replace(u'”', u'"').replace(u'“', u'"')  # fix closing double quotes
         data = TargetData(text)
-        message.reply("received message")
+        message_safe_reply(message, "received message")
         thread = threading.Thread(target=self.download_async, args=(data, message))
         thread.start()
         return thread
