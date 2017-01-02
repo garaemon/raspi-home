@@ -11,3 +11,12 @@ brew install ansible
 ```
 ansible-playbook -i ipaddress, raspi3.yaml --ask-pass
 ```
+
+## setup cron
+
+Edit cron like below:
+```
+$ crontab -l
+@reboot /home/pi/deploy-raspi-home/run.sh 2>&1 | tee /tmp/raspi.log
+*/5 * * * * /home/pi/deploy-raspi-home/restart.sh 2>&1
+```
