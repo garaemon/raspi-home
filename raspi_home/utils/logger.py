@@ -8,8 +8,6 @@ from socket import gethostname
 
 import coloredlogs
 
-from websocket import WebSocketConnectionClosedException
-
 
 class SlackHandler(logging.Handler):
     'Custom logging handler to output log message to slack.'
@@ -23,9 +21,6 @@ class SlackHandler(logging.Handler):
         if self.bot and self.log_channel:
             try:
                 self.bot.send_message_to_wo_logging(self.log_channel, self.format(record))
-            except WebSocketConnectionClosedException:
-                self.bot._client.reconnect()
-                self.emit(record)  # try again
             except Exception as e:
                 print('slack Exception: {}'.format(e))
 

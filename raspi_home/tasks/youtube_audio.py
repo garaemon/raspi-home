@@ -84,18 +84,26 @@ class TargetData(object):
                     info.get('url'),
                     info.get('title'), output_filename))
             ydl.download([self.url])
+        output_filename_with_suffix = output_filename + '.mp3'
         if message:
-            message_safe_reply(message, 'Done downloading to {}.mp3'.format(output_filename))
+            message_safe_reply(message, 'Done downloading to {}'.format(
+                output_filename_with_suffix))
             message_safe_reply(message, 'Updating tag information')
-        self.updateTagInformation(output_filename + '.mp3', info)
+        self.updateTagInformation(output_filename_with_suffix, info)
         if upload:
             if message:
                 message_safe_reply(message, 'Start uploading')
             logging.info('Uploading to gmusic')
-            gmusic_client.upload(output_filename + '.mp3')
+            gmusic_client.upload(output_filename_with_suffix)
             if message:
                 message_safe_reply(message, 'Done uploading')
             logging.info('Done uploading')
+        # remove donloaded file
+        logging.info('Remove downloaded file: {}'.format(output_filename_with_suffix))
+        try:
+            os.remove(output_filename_with_suffix)
+        except Exception as e:
+            logging.error('Error during remove file: {}'.format(e))
 
     def updateTagInformation(self, filename, info):
         audiofile = eyed3.load(filename)
