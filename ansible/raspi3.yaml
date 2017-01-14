@@ -23,6 +23,8 @@
         - libreadline-dev
         - libsqlite3-dev
         - libssl-dev
+        - mongodb
+        - mongodb-dev
         - mplayer
         - open-jtalk
         - open-jtalk-mecab-naist-jdic
