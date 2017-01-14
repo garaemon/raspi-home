@@ -56,5 +56,5 @@
     - name: create slackborc
       shell: |
         SLACKBOT_API_TOKEN="{{lookup('env', 'SLACKBOT_API_TOKEN')}}"
-        echo export SLACKBOT_API_TOKEN=$SLACKBOT_API_TOKEN= \
+        echo export SLACKBOT_API_TOKEN=$SLACKBOT_API_TOKEN \
         > $HOME/.slackbotrc
