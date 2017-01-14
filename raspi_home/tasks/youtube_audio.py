@@ -116,7 +116,6 @@ class TargetData(object):
 class YoutubeAudioTask(Task):
     def match(self, channel, text, message):
         text = text.replace(u'”', u'"').replace(u'“', u'"')  # fix closing double quotes
-        logging.info('text: {}'.format(text))
         if channel == 'iot_youtube_audio':
             try:
                 # try to parse as json
