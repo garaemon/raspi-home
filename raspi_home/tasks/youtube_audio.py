@@ -42,6 +42,22 @@ class TargetData(object):
         self.artist = json_obj['artist']
         self.album = json_obj['album']
 
+    def copy_with_url(self, new_url):
+        '''Create new TargetData with different url.
+
+        Other filds are copied to new TargetData instnace.
+        '''
+        new_args = {
+            'url': new_url,
+            'artist': self.artist,
+            'album': self.album}
+
+        return TargetData(json.dumps(new_args))
+
+    def is_youtube_list(self, info):
+        'Check if info is youtube video list or not.'
+        return '_type' in info and info['_type'] == 'playlist'
+
     def download(self, message, upload=True):
         date_str = datetime.datetime.now().strftime('%y%m%d_%H%M%S')
         output_filename = os.path.join('/tmp', '_'.join([self.BASE_OUTPUT_NAME, date_str]))
@@ -64,6 +80,13 @@ class TargetData(object):
             gmusic_client.login()
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(self.url, download=False)
+            if self.is_youtube_list(info):
+                logging.info('Looks youtube list, download them as list')
+                for entry in info['entries']:
+                    logging.info('entry url: {}'.format(entry['webpage_url']))
+                    new_data = self.copy_with_url(entry['webpage_url'])
+                    new_data.download(message, upload=upload)
+                return
             if upload:
                 # check the song is already uploaded
                 if gmusic_client.has_song(info.get('title')):
@@ -159,10 +182,23 @@ def demo_onefile():
     test_data1.download(None)
 
 
+def demo_list():
+    logging.info('Running demo_onefile: download video list')
+    test_data1 = TargetData(u'''
+    {
+      "url": "https://www.youtube.com/user/akabane1981/videos",
+      "artist": "Test Video List",
+      "album": "test from youtube_audio.py"
+    }
+    ''')
+    test_data1.download(None, upload=False)
+
+
 if __name__ == '__main__':
     field_styles = coloredlogs.DEFAULT_FIELD_STYLES
     field_styles['levelname'] = {'color': 'white', 'bold': True}
     coloredlogs.install(level=logging.INFO,
                         fmt='%(asctime)s [%(levelname)s] %(message)s',
                         field_styles=field_styles)
-    demo_onefile()
+    # demo_onefile()
+    demo_list()
