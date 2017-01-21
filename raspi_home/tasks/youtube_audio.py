@@ -58,7 +58,7 @@ class TargetData(object):
         'Check if info is youtube video list or not.'
         return '_type' in info and info['_type'] == 'playlist'
 
-    def download(self, message, upload=True):
+    def download(self, message, upload=True, songs=None):
         date_str = datetime.datetime.now().strftime('%y%m%d_%H%M%S')
         output_filename = os.path.join('/tmp', '_'.join([self.BASE_OUTPUT_NAME, date_str]))
         ydl_opts = {'audioformat': 'mp3', 'format': 'bestaudio/best',
@@ -78,18 +78,24 @@ class TargetData(object):
             logging.info('Logging in to gmusic')
             gmusic_client = GMClient()
             gmusic_client.login()
+            if songs is None:
+                songs = gmusic_client.get_all_songs()
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(self.url, download=False)
             if self.is_youtube_list(info):
                 logging.info('Looks youtube list, download them as list')
                 for entry in info['entries']:
-                    logging.info('entry url: {}'.format(entry['webpage_url']))
-                    new_data = self.copy_with_url(entry['webpage_url'])
-                    new_data.download(message, upload=upload)
+                    try:
+                        logging.info('entry url: {}'.format(entry['webpage_url']))
+                        new_data = self.copy_with_url(entry['webpage_url'])
+                        new_data.download(message, upload=upload, songs=songs)
+                    except Exception as e:
+                        logging.error('Failed to download: {}'.format(e))
+                logging.info('Done processing all videos in the youtube list')
                 return
             if upload:
                 # check the song is already uploaded
-                if gmusic_client.has_song(info.get('title')):
+                if info.get('title') in [song['title'] for song in songs]:
                     warn_message = u'{} is already uploaded. skip downloading'.format(
                         info.get('title'))
                     logging.warn(warn_message)
