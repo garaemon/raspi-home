@@ -23,13 +23,16 @@
         - libreadline-dev
         - libsqlite3-dev
         - libssl-dev
+        - libxml2-utils
         - mongodb
         - mongodb-dev
         - mplayer
         - open-jtalk
         - open-jtalk-mecab-naist-jdic
         - openssl
+        - rtmpdump
         - screen
+        - swftools
         - tk-dev
         - tmux
         - zlib1g-dev

@@ -29,7 +29,7 @@ def init_logging():
     'Function to initialize logger.'
     field_styles = coloredlogs.DEFAULT_FIELD_STYLES
     field_styles['levelname'] = {'color': 'white', 'bold': True}
-    log_format = '%(asctime)s {} [%(levelname)s] [%(filename)s:%(lineno)d] %(message)s'.format(
+    log_format = '%(asctime)s {} [%(levelname)s] [%(filename)s:%(lineno)d]\n  %(message)s'.format(
         gethostname())
     coloredlogs.install(level=logging.INFO,
                         fmt=log_format,

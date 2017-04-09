@@ -65,6 +65,7 @@ class TargetData(object):
                     'outtmpl': '{}.%(ext)s'.format(output_filename),
                     'quiet': True,
                     'nocheckcertificate': True,
+                    'ignoreerrors': True,
                     'postprocessors': [{
                         'key': 'FFmpegExtractAudio',
                         'preferredcodec': 'mp3',

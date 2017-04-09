@@ -22,6 +22,6 @@ flake8 .
 title_echo "<< python OK"
 
 title_echo ">> checking shell syntax"
-find . -name .venv -prune -type f -or -name '*.sh' -type f -exec \
+find . -name .venv -prune -type f -or -prune -name 'rec_radiko.sh' -o -name '*.sh' -type f -exec \
      shellcheck {} \;
 title_echo "<< shell OK"

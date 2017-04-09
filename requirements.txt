@@ -1,11 +1,11 @@
-appdirs==1.4.0
+APScheduler==3.3.1
 beautifulsoup4==4.5.1
 colorama==0.3.7
 coloredlogs==5.2
 configparser==3.5.0
 decorator==4.0.10
 enum34==1.1.6
-eyeD3==0.7.9
+eyeD3==0.7.11
 flake8==3.2.1
 flake8-import-order==0.11
 funcsigs==1.0.2
@@ -38,3 +38,4 @@ slacker==0.9.24
 validictory==1.1.0
 websocket-client==0.37.0
 youtube-dl==2017.1.10
+google-api-python-client==1.6.1
