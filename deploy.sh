@@ -14,6 +14,7 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)"
 cd "$script_dir"
 
 git ls-files -z | rsync --files-from - --copy-links -av0 . "$TARGET_IP":"$TARGET_DIR"
+scp .cache-${SPOTIPY_USER} "$TARGET_IP":"$TARGET_DIR"
 rsync -avz ~/.config/raspi_home/ "$TARGET_IP":.config/raspi_home/
 rsync -avz ~/.raspi-home-secrets/ "$TARGET_IP":.raspi-home-secrets/
 unset LC_ALL

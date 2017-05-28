@@ -14,6 +14,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from raspi_home.bot import Bot  # noqa: E402
 from raspi_home.dispatcher import Dispatcher  # noqa: E402
 from raspi_home.periodic_tasks.gcal_radiko import GCalRadikoTask  # noqa: E402
+from raspi_home.periodic_tasks.spotify_logger import SpotifyLoggerTask  # noqa: E402
 from raspi_home.slackbot_patch import apply_patches  # noqa: E402
 from raspi_home.tasks.hi import HiTask  # noqa: E402
 from raspi_home.tasks.speach import SpeachTask  # noqa: E402
@@ -31,7 +32,7 @@ def main():
     dispatcher.registerTasks([HiTask(), SpeachTask(),
                               WeatherTask(), YoutubeAudioTask()])
     bot = Bot()
-    periodic_tasks = [GCalRadikoTask(bot)]  # noqa: F841
+    periodic_tasks = [GCalRadikoTask(bot), SpotifyLoggerTask(bot)]  # noqa: F841
     root_logger = logging.getLogger()
     slack_log_handler = SlackHandler(bot, "iot_log")
     formatter = logging.Formatter(log_format)
